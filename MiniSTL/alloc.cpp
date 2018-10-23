@@ -13,7 +13,7 @@ namespace MiniSTL {
 	void *alloc::allocate(size_t bytes) {
 		if (bytes > EMaxBytes::MAXBYTES) return malloc(bytes);	//超过128的用mallo申请
 
-																//选择16个freelist 中适当的一个
+		//选择16个freelist 中适当的一个
 		size_t index = FREELIST_INDEX(bytes);
 		obj *list = free_list[index];
 		if (list) {

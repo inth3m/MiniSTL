@@ -2,6 +2,7 @@
 #include"ALLOC.h"
 #include"allocator.h"
 #include"vector.h"
+#include"list.h"
 #include<iostream>
 #include<string>
 class student {
@@ -10,7 +11,7 @@ public:
 	int age;
 };
 
-int main() {
+void vectorTest() {
 
 	int i;
 	vector<int> iv(2, 9);
@@ -66,5 +67,13 @@ int main() {
 		cout << iv[i] << " ";
 	cout << endl;
 
+}
+
+int main() {
+	list<int> l;
+	l.push_front(5);
+	list<int>::iterator it = l.begin();
+	for(;it!=l.end();it++)
+		cout << it.p->data << endl;
 	system("pause");
 }
