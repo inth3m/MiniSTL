@@ -72,6 +72,8 @@ void vectorTest() {
 int main() {
 	list<int> l;
 	l.push_front(5);
+	l.push_front(6);
+	l.pop_front();
 	list<int>::iterator it = l.begin();
 	for(;it!=l.end();it++)
 		cout << it.p->data << endl;
