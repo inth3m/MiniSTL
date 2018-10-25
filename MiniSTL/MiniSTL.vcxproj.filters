@@ -13,31 +13,46 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Test">
+      <UniqueIdentifier>{6d4e6700-5788-4370-9922-e21fe1dd3a3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\序列式容器">
+      <UniqueIdentifier>{966e95e8-4156-46e0-be1c-ec0d35c7a390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\基本组件">
+      <UniqueIdentifier>{5b6bd6af-59a2-475b-bb40-6be5c1a7309d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="alloc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="allocator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="construct.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="iterator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="type_traits.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="uninitializedFunction.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="vector.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="deque.h">
+      <Filter>头文件\序列式容器</Filter>
     </ClInclude>
     <ClInclude Include="list.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\序列式容器</Filter>
+    </ClInclude>
+    <ClInclude Include="vector.h">
+      <Filter>头文件\序列式容器</Filter>
+    </ClInclude>
+    <ClInclude Include="alloc.h">
+      <Filter>头文件\基本组件</Filter>
+    </ClInclude>
+    <ClInclude Include="allocator.h">
+      <Filter>头文件\基本组件</Filter>
+    </ClInclude>
+    <ClInclude Include="construct.h">
+      <Filter>头文件\基本组件</Filter>
+    </ClInclude>
+    <ClInclude Include="iterator.h">
+      <Filter>头文件\基本组件</Filter>
+    </ClInclude>
+    <ClInclude Include="type_traits.h">
+      <Filter>头文件\基本组件</Filter>
+    </ClInclude>
+    <ClInclude Include="uninitializedFunction.h">
+      <Filter>头文件\基本组件</Filter>
+    </ClInclude>
+    <ClInclude Include="stack.h">
+      <Filter>头文件\序列式容器</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +60,7 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
