@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="头文件\序列式容器">
-      <UniqueIdentifier>{05316bf5-83c0-437f-bcaf-73e8fdb12cf4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="alloc.h">
@@ -36,14 +33,11 @@
     <ClInclude Include="uninitializedFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="list.h">
-      <Filter>头文件\序列式容器</Filter>
-    </ClInclude>
     <ClInclude Include="vector.h">
-      <Filter>头文件\序列式容器</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="deque.h">
-      <Filter>头文件\序列式容器</Filter>
+    <ClInclude Include="list.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
