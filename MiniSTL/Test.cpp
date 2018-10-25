@@ -3,6 +3,7 @@
 #include"allocator.h"
 #include"vector.h"
 #include"list.h"
+#include"deque.h"
 #include<iostream>
 #include<string>
 class student {
@@ -69,13 +70,29 @@ void vectorTest() {
 
 }
 
+void dequeTest() {
+
+	deque<int> ideq(20, 9);
+	cout << "size = " << ideq.size() << endl;
+
+	for (int i = 0; i < ideq.size(); ++i) {
+		ideq[i] = i;
+	}
+	cout << endl;
+
+	for (int i = 0; i < 3; i++) {
+		ideq.push_back(i);
+	}
+
+	for (int i = 0; i < ideq.size(); i++) {
+		cout << ideq[i] << " ";
+	}
+	cout << endl;
+	cout << "size() = " << ideq.size()<<endl;
+}
+
 int main() {
-	list<int> l;
-	l.push_front(5);
-	l.push_front(6);
-	l.pop_front();
-	list<int>::iterator it = l.begin();
-	for(;it!=l.end();it++)
-		cout << it.p->data << endl;
+	
+	dequeTest();
 	system("pause");
 }
