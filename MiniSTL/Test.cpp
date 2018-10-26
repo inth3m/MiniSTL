@@ -1,6 +1,7 @@
 #include"deque.h"
 #include"vector.h"
 #include"stack.h"
+#include"queue.h"
 
 using namespace MiniSTL;
 void vectorTest() {
@@ -100,9 +101,26 @@ void stackTest() {
 	cout << "size = " << s.size() << endl;;
 	s.pop();
 }
+
+void queueTest() {
+	queue<int> iqueue;
+	iqueue.push(1);
+	iqueue.push(3);
+	iqueue.push(5);
+	iqueue.push(7);
+
+	cout << "size = " << iqueue.size() << endl;
+	cout << "front = " << iqueue.front() << endl;
+
+	iqueue.pop(); cout << "front = " << iqueue.front() << endl;
+	iqueue.pop(); cout << "front = " << iqueue.front() << endl;
+	iqueue.pop(); cout << "front = " << iqueue.front() << endl;
+	cout << "size = " << iqueue.size() << endl;
+}
 int main() {
 
-	stackTest();
+	//stackTest();
 	//dequeTest();
+	queueTest();
 	system("pause");
 }

@@ -12,9 +12,9 @@ using namespace MiniSTL;
 namespace MiniSTL{
 template<class T, class Sequence = MiniSTL::deque<T> >
 class stack {
-	/*friend bool operator== (const stack &, const stack&);
-	friend bool operator< (const stack &, const stack&);
-	*///typedef MiniSTL::deque<T> Sequence;
+//	friend bool operator==<> (const stack &, const stack&);
+//	friend bool operator< <>(const stack &, const stack&);
+	//typedef MiniSTL::deque<T> Sequence;
 	typedef typename Sequence::value_type value_type;
 	typedef typename Sequence::size_type size_type;
 	typedef typename Sequence::reference reference;
@@ -31,12 +31,12 @@ public:
 	void push(const value_type &x) { c.push_back(x); }
 	void pop() { c.pop_back(); }
 	//template<class T, class Sequence>
-	//bool operator== (const stack<T, Sequence>&x, const stack<T, Sequence>&y) {
-	//	return x.c == y.c;
-	//}
-	//bool operator== (const stack<T, Sequence>&x, const stack<T, Sequence>&y) {
-	//	return x.c < y.c;
-	//}
+	/*bool operator== (const stack<T, Sequence>&x, const stack<T, Sequence>&y) {
+		return x.c == y.c;
+	}
+	bool operator < (const stack<T, Sequence>&x, const stack<T, Sequence>&y) {
+		return x.c < y.c;
+	}*/
 };
 }
 #endif // !_STACK_H

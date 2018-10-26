@@ -121,6 +121,7 @@
     <ClInclude Include="deque.h" />
     <ClInclude Include="iterator.h" />
     <ClInclude Include="list.h" />
+    <ClInclude Include="queue.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="type_traits.h" />
     <ClInclude Include="uninitializedFunction.h" />
