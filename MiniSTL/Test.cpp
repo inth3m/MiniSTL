@@ -3,6 +3,7 @@
 #include"stack.h"
 #include"queue.h"
 #include"heap.h"
+#include"priority_queue.h"
 
 using namespace MiniSTL;
 void vectorTest() {
@@ -124,29 +125,41 @@ void heapTest() {
 	int ia[9] = { 0,1,2,3,4,8,9,3,5 };
 	vector<int> ivec(ia, ia + 9);
 
-	make_heap(ivec.begin(), ivec.end());
+	MiniSTL::make_heap(ivec.begin(), ivec.end());
 	for (int i = 0; i < ivec.size(); ++i) {
 		cout << ivec[i] << ' ';
 	}
 	cout << endl;
 	
 	ivec.push_back(7);
-	make_heap(ivec.begin(), ivec.end());
+	MiniSTL::make_heap(ivec.begin(), ivec.end());
 	for (int i = 0; i < ivec.size(); ++i) {
 		cout << ivec[i] << ' ';
 	}
 	cout << endl;
 
-	pop_heap(ivec.begin(), ivec.end());
+	MiniSTL::pop_heap(ivec.begin(), ivec.end());
 	cout << ivec.back() << endl;
 	ivec.pop_back();
 }
 
+void priority_queueTest() {
+	int ia[9] = { 0,1,2,3,4,8,9,3,5 };
+	priortyu_queue<int> ipq(ia, ia + 9);
+	cout << "szie = " << ipq.size() << endl;
+
+	while (!ipq.empty()) {
+		cout << ipq.top() << " ";
+		ipq.pop();
+	}
+	cout << endl;
+}
 int main() {
 
 	//stackTest();
 	//dequeTest();
 	//queueTest();
-	heapTest();
+	//heapTest();
+	priority_queueTest();
 	system("pause");
 }
