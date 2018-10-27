@@ -4,6 +4,7 @@
 #include"queue.h"
 #include"heap.h"
 #include"priority_queue.h"
+#include"slist.h"
 
 using namespace MiniSTL;
 void vectorTest() {
@@ -154,12 +155,34 @@ void priority_queueTest() {
 	}
 	cout << endl;
 }
+
+void slistTest() {
+	int i;
+	slist<int>islit;
+	cout << "size = " << islit.size() << endl;
+
+	islit.push_front(9);
+	islit.push_front(1);
+	islit.push_front(2);
+	islit.push_front(3);
+	islit.push_front(4);
+	cout << "size = " << islit.size() << endl;
+
+	slist<int>::iterator ite = islit.begin();
+	slist<int>::iterator ite2 = islit.end();
+
+	for (; ite != ite2; ite++) {
+		cout << *ite << " ";
+	}
+	cout << endl;
+}
 int main() {
 
 	//stackTest();
 	//dequeTest();
 	//queueTest();
 	//heapTest();
-	priority_queueTest();
+	//priority_queueTest();
+	slistTest();
 	system("pause");
 }

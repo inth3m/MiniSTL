@@ -124,6 +124,7 @@
     <ClInclude Include="list.h" />
     <ClInclude Include="priority_queue.h" />
     <ClInclude Include="queue.h" />
+    <ClInclude Include="slist.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="type_traits.h" />
     <ClInclude Include="uninitializedFunction.h" />

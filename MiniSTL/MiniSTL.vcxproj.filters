@@ -63,6 +63,9 @@
     <ClInclude Include="priority_queue.h">
       <Filter>头文件\序列式容器</Filter>
     </ClInclude>
+    <ClInclude Include="slist.h">
+      <Filter>头文件\序列式容器</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="alloc.cpp">
