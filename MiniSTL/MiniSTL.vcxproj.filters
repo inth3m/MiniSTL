@@ -22,6 +22,9 @@
     <Filter Include="头文件\基本组件">
       <UniqueIdentifier>{5b6bd6af-59a2-475b-bb40-6be5c1a7309d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\关联式容器">
+      <UniqueIdentifier>{01440d19-6796-4797-9e20-f81703f5eb6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="deque.h">
@@ -65,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="slist.h">
       <Filter>头文件\序列式容器</Filter>
+    </ClInclude>
+    <ClInclude Include="RB_tree.h">
+      <Filter>头文件\关联式容器</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
