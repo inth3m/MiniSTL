@@ -122,10 +122,19 @@ namespace MiniSTL {
 			decrement(); 
 			return temp;
 		}
+
+		
+		friend	inline bool operator ==(const _rb_tree_base_iterator& __x, const _rb_tree_base_iterator& __y) {
+			return __x.node == __y.node;
+		}
+		friend inline bool operator !=(const _rb_tree_base_iterator& __x, const _rb_tree_base_iterator& __y) {
+			return __x.node != __y.node;
+		}
+
 	};
 
 	template<class Key, class Value, class KeyOfValue, class Compare>
-	class re_tree {
+	class rb_tree {
 	protected:
 		typedef void* void_pointer;
 		typedef _rb_tree_node_base* base_ptr;
@@ -176,13 +185,22 @@ namespace MiniSTL {
 		link_type& left_most() const { return (link_type&)header->left; }
 		link_type& right_most() const { return (link_type&)header->right; }
 
-		static link_type left(link_type x) { return (link_type&)(x->left); }
-		static link_type right(link_type x) { return (link_type&)(x->right); }
-		static link_type parent(link_type x) { return (link_type&)(x->parent); }
+		//获得节点x 成员
+		static link_type& left(link_type x) { return (link_type&)(x->left); }
+		static link_type& right(link_type x) { return (link_type&)(x->right); }
+		static link_type& parent(link_type x) { return (link_type&)(x->parent); }
 		static reference value(link_type x) { return x->value_field; }
 		static const Key& key(link_type x){ return KeyOfValue()(value(x)); }
 		static color_type& color(link_type x) { return (color_type&)(x->color); }
 
+		static link_type& left(base_ptr x) { return (link_type&)(x->left); }
+		static link_type& right(base_ptr x) { return (link_type&)(x->right); }
+		static link_type& parent(base_ptr x) { return (link_type&)(x->parent); }
+		static reference value(base_ptr x) { return x->value_field; }
+		static const Key& key(base_ptr x) { return KeyOfValue()(value(x)); }
+		static color_type& color(base_ptr x) { return (color_type&)(x->color); }
+
+		//求取极大值和极小值
 		static link_type minmum(link_type x) {
 			return (link_type)_rb_tree_node_base::minmum();
 		}
@@ -193,10 +211,9 @@ namespace MiniSTL {
 	public:
 		typedef _rb_tree_iterator<value_type, reference, pointer> iterator;
 
-	private:
-		iterator _insert(base_ptr x, base_ptr y, const value_type &v);
+	private:/*
 		link_type _copy(link_type x, link_type p);
-		void _erase(link_type x);
+		void _erase(link_type x);*/
 		void init() {
 			header = get_node();					//产生一个节点空间
 			color(header) = _rb_tree_red;		//header为红色，以此区分root
@@ -207,11 +224,21 @@ namespace MiniSTL {
 		}
 
 	public:
-		rb_tree(const Compare& comp = Compare()) 
-			:node_count(0), key_compare(comp) { init(); }
+	/*	void clear() {
+			if (node_count != 0) {
+				erase(root());
+				left_most() = header;
+				root() = 0;
+				right_most() = header;
+				node_count = 0;
+			}
+		}*/
+		rb_tree(const Compare& comp = Compare()) :node_count(0), key_compare(comp) {
+			init();
+		}
 		~rb_tree() {
-			clear();
-			put_node(header);
+			//clear();
+			//put_node(header);
 		}
 
 		rb_tree<Key, Value, KeyOfValue, Compare>&
@@ -224,12 +251,165 @@ namespace MiniSTL {
 		bool empty()const { return node_count == 0; }
 		size_type size() const { return node_count; }
 		size_type max_szie()const { return size_type(-1); }
+/*
+		void erase(iterator position);
+		size_type erase(const key_type &x);
+		void erase(iterator first, iterator last);
+		void erase(const key_type * first, const key_type* last);*/
+
 
 	public:
-		pair<iterator, bool> insert_unique(const value_type &x);
-		iterator insert_equal(const value_type &x);
+
+		iterator _insert(base_ptr x_, base_ptr y_, const Value& v) {
+			//x为新插入节点，y为插入节点之父节点，参数v为新值
+			link_type x = (link_type)x_;
+			link_type y = (link_type)y_;
+
+			link_type z;
+
+			if (y == header || x != 0 || key_compare(KeyOfValue()(v), key(y))) {
+				z = creat_node(v);		//产生一个新节点
+				left(y) = z;
+				if (y == header) {
+					root() = z;
+					right_most() = z;
+				}
+				else if (y == left_most())
+					left_most() = z;
+			}
+			else {
+				z = creat_node(v);
+				right(y) = z;
+				if (y == right_most())
+					right_most() = z;
+			}
+			parent(z) = y;				//设定新节点的父节点
+			left(z) = 0;					//设定新节点的左节点
+			right(z) = 0;					//设定新节点的右节点
+
+			_rb_tree_rebalance(z, header->parent);
+			++node_count;
+			return iterator(z);
+		}
+
+		//插入的节点必须独一无二
+		pair<iterator, bool> insert_unique(const value_type &v) {
+			link_type y = header;
+			link_type x = root();
+			bool comp = true;
+			while (x != 0) {
+				y = x;
+				comp = key_compare(KeyOfValue()(v), key(x));
+				x = comp ? left(x) : right(x);
+			}
+			//离开循环后，y所指的插入节点的父节点，此时比为叶节点
+
+			iterator j = iterator(y);	//迭代器指向插入节点的父节点
+			if (comp)						//comp为真，表示遇大，插入与左侧
+				if (j == begin())		//如果插入节点之父节点为最左节点
+					return pair<iterator, bool>(_insert(x, y, v), true);
+				else
+					--j;
+			if (key_compare(key(link_type(j.node)), KeyOfValue()(v)))	//插入右侧
+				return pair<iterator, bool>(_insert(x, y, v), true);
+
+			//进行至此，表示新值一定与树中键值重复，不插入
+			return pair<iterator, bool>(j, false);
+		}
+
+		//允许键值重复
+		//返回值是一个RB-tree 迭代器，指向插入节点
+		iterator insert_equal(const value_type &v) {
+			link_type y = header;
+			link_type x = root();		//从根节点开始
+			while (x != 0) {
+				y = x;
+				x = key_compare(KeyOfValue()(v), key(x)) ? left(x) : right(x);
+				//遇大往左，遇小往右
+			}
+			return _insert(x, y, v);
+			//x为新值插入点，y为插入点的父节点，v为新值
+		}
 
 		
+		inline void _rb_tree_rebalance(_rb_tree_node_base *x, _rb_tree_node_base*& root) {
+			x->color = _rb_tree_red;
+			while (x != root && x->parent->color == _rb_tree_red) {
+				if (x->parent == x->parent->parent->left) {
+					_rb_tree_node_base *y = x->parent->parent->right;
+					if (y&&y->color == _rb_tree_red) {
+						x->parent->color = _rb_tree_black;
+						y->color = _rb_tree_black;
+						x->parent->parent->color = _rb_tree_red;
+						x = x->parent->parent;
+					}
+					else {
+						if (x == x->parent->right)
+							x = x->parent;
+						_rb_tree_rotate_left(x, root);
+					}
+					x->parent->color = _rb_tree_black;
+					x->parent->parent->color = _rb_tree_red;
+					_rb_tree_rotate_right(x->parent->parent, root);
+				}
+				else {
+					_rb_tree_node_base *y = x->parent->parent->left;
+					if (y && y->color == _rb_tree_red) {
+						x->parent->color = _rb_tree_black;
+						x->parent->parent->color = _rb_tree_red;
+						x = x->parent->parent;
+					}
+					else {
+						if (x == x->parent->left) {
+							x = x->parent;
+							_rb_tree_rotate_right(x, root);
+						}
+						x->parent->color = _rb_tree_black;
+						x->parent->parent->color = _rb_tree_red;
+						_rb_tree_rotate_left(x->parent->parent, root);
+					}
+				}
+			
+			}//while结束
+			root->color = _rb_tree_black;
+		}
+		
+		inline void _rb_tree_rotate_left(_rb_tree_node_base *x, _rb_tree_node_base*& root) {
+			//x为旋转节点
+			_rb_tree_node_base *y = x->right;
+			x->right = y->left;
+			if (y->left != 0)
+				y->left->parent = x;
+			y->parent = x->parent;
+
+			if (x == root) root = y;
+			else if (x == x->parent->left)
+				x->parent->left = y;
+			else
+				x->parent->right = y;
+			y->left = x;
+			x->parent = y;
+		}
+
+		inline void _rb_tree_rotate_right(_rb_tree_node_base *x, _rb_tree_node_base*& root) {
+			//x为旋转节点
+			_rb_tree_node_base *y = x->left;
+			x->left = y->right;
+			if (y->right != 0)
+				y->right->parent = x;
+			y->parent = x->parent;
+
+			if (x == root) root = y;
+			else if (x == x->parent->right)
+				x->parent->right = y;
+			else
+				x->parent->left = y;
+			y->right = x;
+			x->parent = y;
+		}
 	};
 }
 #endif // !_RB_TREE_H
+
+
+

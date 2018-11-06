@@ -5,6 +5,8 @@
 #include"heap.h"
 #include"priority_queue.h"
 #include"slist.h"
+#include"RB_tree.h"
+#include<type_traits>
 
 using namespace MiniSTL;
 void vectorTest() {
@@ -176,6 +178,34 @@ void slistTest() {
 	}
 	cout << endl;
 }
+
+void rbtreeTest() {
+	rb_tree<int, int, identity<int>, less<int>> itree;
+	std::cout << itree.size() << endl;
+
+	itree.insert_unique(10);
+	itree.insert_unique(7);
+	itree.insert_unique(8);
+
+	/*itree.insert_unique(15);
+	itree.insert_unique(5);
+	itree.insert_unique(6);
+
+	itree.insert_unique(11);
+
+	itree.insert_unique(13);
+	itree.insert_unique(12);
+*/
+	cout << itree.size() << endl;
+	rb_tree<int, int, identity<int>, less<int>>::iterator ite1 = itree.begin();
+	rb_tree<int, int, identity<int>, less<int>>::iterator ite2 = itree.end();
+
+	for (; ite1 != ite2; ++ite1) {
+		cout << *ite1 << " ";
+	}
+
+
+}
 int main() {
 
 	//stackTest();
@@ -183,6 +213,7 @@ int main() {
 	//queueTest();
 	//heapTest();
 	//priority_queueTest();
-	slistTest();
+	//slistTest();
+	rbtreeTest();
 	system("pause");
 }
