@@ -111,12 +111,12 @@ namespace MiniSTL {
 		pointer operator->()const { return &(operator*()); }
 
 		self& operator++() { increment(); return *this; }
-		self& operator++(int) { 
+		self operator++(int) { 
 			self temp = *this;
 			increment(); 
 			return temp;
 		}
-		self operator--() { decrement(); return *this; }
+		self& operator--() { decrement(); return *this; }
 		self operator--(int) { 
 			self temp = *this;
 			decrement(); 
@@ -213,18 +213,19 @@ namespace MiniSTL {
 
 	private:/*
 		link_type _copy(link_type x, link_type p);
-		void _erase(link_type x);*/
+		void _erase(link_type x) {
+		}*/
 		void init() {
 			header = get_node();					//产生一个节点空间
 			color(header) = _rb_tree_red;		//header为红色，以此区分root
 
 			root() = 0;
-			left_most() = header;
-			right_most() = header;
+			left_most() = header;					//令header的左子节点为自己
+			right_most() = header;				//令header的右子节点为自己
 		}
 
-	public:
-	/*	void clear() {
+	public:/*
+		void clear() {
 			if (node_count != 0) {
 				erase(root());
 				left_most() = header;
@@ -333,40 +334,42 @@ namespace MiniSTL {
 
 		
 		inline void _rb_tree_rebalance(_rb_tree_node_base *x, _rb_tree_node_base*& root) {
-			x->color = _rb_tree_red;
-			while (x != root && x->parent->color == _rb_tree_red) {
-				if (x->parent == x->parent->parent->left) {
-					_rb_tree_node_base *y = x->parent->parent->right;
-					if (y&&y->color == _rb_tree_red) {
-						x->parent->color = _rb_tree_black;
-						y->color = _rb_tree_black;
-						x->parent->parent->color = _rb_tree_red;
+			x->color = _rb_tree_red;																//新节点必须为红色
+			while (x != root && x->parent->color == _rb_tree_red) {			//父节点为红
+				if (x->parent == x->parent->parent->left) {							//父节点为祖父节点的左子节点
+					_rb_tree_node_base *y = x->parent->parent->right;			//y为伯父节点
+					if (y&&y->color == _rb_tree_red) {										//伯父节点存在，且为红色
+						x->parent->color = _rb_tree_black;								//更改父节点为黑
+						y->color = _rb_tree_black;												//更改伯父节点为黑
+						x->parent->parent->color = _rb_tree_red;					//更改祖父节点为红
 						x = x->parent->parent;
 					}
-					else {
-						if (x == x->parent->right)
+					else {																					//无伯父节点，或伯父节点为黑色
+						if (x == x->parent->right) {												//新节点为父节点的右子节点
 							x = x->parent;
-						_rb_tree_rotate_left(x, root);
+							_rb_tree_rotate_left(x, root);											//左旋
+						}
 					}
-					x->parent->color = _rb_tree_black;
-					x->parent->parent->color = _rb_tree_red;
-					_rb_tree_rotate_right(x->parent->parent, root);
+					x->parent->color = _rb_tree_black;									//父节点更改为红色
+					x->parent->parent->color = _rb_tree_red;						//祖父更改为红色
+					_rb_tree_rotate_right(x->parent->parent, root);					//右旋
 				}
-				else {
-					_rb_tree_node_base *y = x->parent->parent->left;
-					if (y && y->color == _rb_tree_red) {
-						x->parent->color = _rb_tree_black;
-						x->parent->parent->color = _rb_tree_red;
-						x = x->parent->parent;
+				else {																						//父节点为祖父节点的右节点
+					_rb_tree_node_base *y = x->parent->parent->left;			//y为伯父节点
+					if (y && y->color == _rb_tree_red) {									//伯父节点存在，且为红色
+						x->parent->color = _rb_tree_black;								//更改父节点为黑色
+						y->color = _rb_tree_black;												//更改伯父节点为黑色
+						x->parent->parent->color = _rb_tree_red;					//祖父节点为红色
+						x = x->parent->parent;													//准备继续往上层检查
 					}
-					else {
-						if (x == x->parent->left) {
-							x = x->parent;
-							_rb_tree_rotate_right(x, root);
+					else {																					//无伯父节点或伯父节点为黑色
+						if (x == x->parent->left){														
+							x = x->parent;													
+							_rb_tree_rotate_right(x, root);										//右旋
 						}
 						x->parent->color = _rb_tree_black;
 						x->parent->parent->color = _rb_tree_red;
-						_rb_tree_rotate_left(x->parent->parent, root);
+						_rb_tree_rotate_left(x->parent->parent, root);				//左旋
 					}
 				}
 			
