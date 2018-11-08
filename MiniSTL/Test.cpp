@@ -210,6 +210,8 @@ void rbtreeTest() {
 	showTree();
 	itree.insert_unique(12);
 	showTree();
+	itree.erase(itree.begin());
+	showTree();
 	cout << itree.size() << endl;
 
 }
